@@ -21,7 +21,7 @@ class _GroupsWidgetState extends State<GroupsWidget> {
 }
 
 class _GroupsWidgetBody extends StatelessWidget {
-  const _GroupsWidgetBody({super.key});
+  const _GroupsWidgetBody();
 
   @override
   Widget build(BuildContext context) {
@@ -74,27 +74,22 @@ class _GroupListRowWidget extends StatelessWidget {
     return Slidable(
       key: const ValueKey(0),
       endActionPane: ActionPane(
-        motion: BehindMotion(),
+        motion: const BehindMotion(),
         children: [
           SlidableAction(
-            backgroundColor: Colors.red,
+            backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Удалить',
-            onPressed: doNothing,
+            onPressed: (context) => model.deleteGroup(indexInList),
           ),
         ],
       ),
-      child: ColoredBox(
-        color: Colors.white,
-        child: ListTile(
-          title: Text(group.name),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {},
-        ),
+      child: ListTile(
+        title: Text(group.name),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => model.showTasks(context, indexInList),
       ),
     );
   }
 }
-
-void doNothing(BuildContext context) {}

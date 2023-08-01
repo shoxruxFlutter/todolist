@@ -20,7 +20,7 @@ class _GroupFormWidgetState extends State<GroupFormWidget> {
 }
 
 class _GroupFormWidgetBody extends StatelessWidget {
-  const _GroupFormWidgetBody({super.key});
+  const _GroupFormWidgetBody();
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +46,19 @@ class _GroupFormWidgetBody extends StatelessWidget {
 }
 
 class _GroupNameWidget extends StatelessWidget {
-  const _GroupNameWidget({super.key});
+  const _GroupNameWidget();
 
   @override
   Widget build(BuildContext context) {
-    final _model = GroupFormWidgetModelProvider.read(context)?.model;
+    final model = GroupFormWidgetModelProvider.read(context)?.model;
     return TextField(
       autofocus: true,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Имя группы',
       ),
-      onChanged: (value) => _model?.groupName = value,
-      onEditingComplete: () => _model?.saveGroup(context),
+      onChanged: (value) => model?.groupName = value,
+      onEditingComplete: () => model?.saveGroup(context),
     );
   }
 }

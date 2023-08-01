@@ -6,6 +6,7 @@ import 'package:todolist/domain/entity/group.dart';
 
 class GroupFormWidgetModel extends ChangeNotifier {
   var groupName = '';
+
   void saveGroup(BuildContext context) async {
     if (groupName.isEmpty) return;
     if (!Hive.isAdapterRegistered(1)) {
@@ -13,7 +14,6 @@ class GroupFormWidgetModel extends ChangeNotifier {
     }
     final box = await Hive.openBox<Group>('groups_box');
     final group = Group(name: groupName);
-    //unawaited();
     unawaited(box.add(group));
     Navigator.of(context).pop();
   }

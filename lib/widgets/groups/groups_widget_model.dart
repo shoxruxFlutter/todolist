@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todolist/domain/entity/group.dart';
 
@@ -14,6 +15,15 @@ class GroupsWidgetModel extends ChangeNotifier {
 
   void showForm(BuildContext context) {
     Navigator.of(context).pushNamed('/groups/form');
+  }
+
+  void showTasks(BuildContext context, int groupIndex) async {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(GroupAdapter());
+    }
+    final box = await Hive.openBox<Group>('groups_box');
+    final groupKey = box.keyAt(groupIndex);
+    Navigator.of(context).pushNamed('/groups/tasks', arguments: groupKey);
   }
 
   void _readGroupFromHive(Box<Group> box) {
