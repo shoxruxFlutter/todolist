@@ -1,7 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:todolist/domain/data_provider/box_manager.dart';
 import 'package:todolist/domain/entity/group.dart';
 
 class GroupFormWidgetModel extends ChangeNotifier {
@@ -9,12 +7,9 @@ class GroupFormWidgetModel extends ChangeNotifier {
 
   void saveGroup(BuildContext context) async {
     if (groupName.isEmpty) return;
-    if (!Hive.isAdapterRegistered(1)) {
-      Hive.registerAdapter(GroupAdapter());
-    }
-    final box = await Hive.openBox<Group>('groups_box');
+    final box = await BoxManager.instance.openGroupBox();
     final group = Group(name: groupName);
-    unawaited(box.add(group));
+    await box.add(group);
     Navigator.of(context).pop();
   }
 }

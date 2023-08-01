@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todolist/widgets/tasks/tasks_widget_model.dart';
+import 'package:todolist/ui/widgets/tasks/tasks_widget_model.dart';
+
+class TasksWidgetConfiguration {
+  final int groupKey;
+  final String title;
+
+  TasksWidgetConfiguration(this.groupKey, this.title);
+}
 
 class TasksWidget extends StatefulWidget {
-  const TasksWidget({super.key});
+  final TasksWidgetConfiguration configuration;
+
+  const TasksWidget({Key? key, required this.configuration}) : super(key: key);
 
   @override
   State<TasksWidget> createState() => _TasksWidgetState();
 }
 
 class _TasksWidgetState extends State<TasksWidget> {
-  TasksWidgetModel? model;
+  late final TasksWidgetModel _model;
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (model == null) {
-      final groupKey = ModalRoute.of(context)!.settings.arguments as int;
-
-      model = TasksWidgetModel(groupKey: groupKey);
-    }
+  void initState() {
+    super.initState();
+    _model = TasksWidgetModel(configuration: widget.configuration);
   }
 
   @override
   Widget build(BuildContext context) {
     return TasksWidgetModelProvider(
-      model: model!,
+      model: _model,
       child: const TasksWidgetBody(),
     );
   }
@@ -37,7 +42,7 @@ class TasksWidgetBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = TasksWidgetModelProvider.watch(context)?.model;
-    final title = model?.group?.name ?? 'Задачи';
+    final title = model?.configuration.title ?? 'Задачи';
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -45,7 +50,7 @@ class TasksWidgetBody extends StatelessWidget {
       ),
       body: const _TasksListWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => model?.showTask(context),
+        onPressed: () => model?.showTaskForm(context),
         child: const Icon(Icons.add),
       ),
     );
@@ -79,7 +84,6 @@ class _TaskRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = TasksWidgetModelProvider.read(context)!.model;
     final task = model.tasks[indexInList];
-    print(1);
     final style = task.isDone
         ? const TextStyle(decoration: TextDecoration.lineThrough)
         : null;

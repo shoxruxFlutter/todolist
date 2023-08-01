@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todolist/widgets/groups/groups_widget_model.dart';
+import 'package:todolist/ui/widgets/groups/groups_widget_model.dart';
 
 class GroupsWidget extends StatefulWidget {
   const GroupsWidget({super.key});
@@ -32,8 +32,9 @@ class _GroupsWidgetBody extends StatelessWidget {
       ),
       body: const _GroupListWidget(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            GroupsWidgetModelProvider.read(context)?.model.showForm(context),
+        onPressed: () => GroupsWidgetModelProvider.read(context)
+            ?.model
+            .showGroupForm(context),
         child: const Icon(Icons.add),
       ),
     );
