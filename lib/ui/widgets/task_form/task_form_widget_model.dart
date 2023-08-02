@@ -14,6 +14,7 @@ class TaskFormWidgetModel {
     final task = Task(text: taskText, isDone: false);
     final box = await BoxManager.instance.openTasksBox(groupKey);
     await box.add(task);
+    BoxManager.instance.closeBox(box);
     Navigator.of(context).pop();
   }
 }
